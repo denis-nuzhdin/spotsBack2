@@ -34,14 +34,33 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 }
 
-tasks.register<org.gradle.api.tasks.Exec>("composeUp") {
+tasks.register<org.gradle.api.tasks.Exec>("composeUpAll") {
     group = "docker"
-    description = "Запустить docker compose с приложением и БД"
+    description = "Запустить docker compose с приложением и БД (оба в Docker, профиль docker)"
     commandLine("/usr/local/bin/docker", "compose", "up", "--build")
+}
+
+tasks.register<org.gradle.api.tasks.Exec>("composeUpAppOnly") {
+    group = "docker"
+    description = "Запустить только приложение в Docker, используя локальную БД (профиль local)"
+    commandLine(
+        "/usr/local/bin/docker", "compose", "run", "--rm", "--no-deps",
+        "-e", "SPRING_PROFILES_ACTIVE=local",
+        "-e", "SPRING_DATASOURCE_URL=jdbc:postgresql://host.docker.internal:5432/sportsocial",
+        "-e", "SPRING_DATASOURCE_USERNAME=postgres",
+        "-e", "SPRING_DATASOURCE_PASSWORD=postgres",
+        "app"
+    )
 }
 
 tasks.register<org.gradle.api.tasks.Exec>("composeDown") {
     group = "docker"
     description = "Остановить docker compose с приложением и БД"
     commandLine("/usr/local/bin/docker", "compose", "down")
+}
+
+tasks.register<org.gradle.api.tasks.Exec>("composeUpAppOnlyUp") {
+    group = "docker"
+    description = "Запустить только сервис app через 'docker compose up app' (использует локальную БД)"
+    commandLine("/usr/local/bin/docker", "compose", "up", "app")
 }

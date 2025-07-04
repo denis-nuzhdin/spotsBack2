@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/sportsocial
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,12 +13,11 @@ spring:
   jackson:
     serialization:
       INDENT_OUTPUT: true
-  profiles:
-    active: local
 server:
+  address: 0.0.0.0
   port: 8080
 springdoc:
   api-docs:
     path: /v3/api-docs
   swagger-ui:
-    path: /swagger-ui.html 
+    path: /swagger-ui/index.html 
