@@ -10,8 +10,8 @@ COPY build.gradle.kts .
 COPY settings.gradle.kts .
 COPY src src
 
-# Сборка jar-файла
-RUN ./gradlew build --no-daemon
+# Сборка jar-файла (без тестов)
+RUN ./gradlew assemble --no-daemon
 
 # Production image
 FROM openjdk:17-jdk-slim

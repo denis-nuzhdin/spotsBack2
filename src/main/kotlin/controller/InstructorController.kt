@@ -4,6 +4,7 @@ import com.sportsocial.dto.InstructorDto
 import com.sportsocial.model.Instructor
 import com.sportsocial.service.InstructorService
 import org.springframework.web.bind.annotation.*
+import jakarta.validation.Valid
 
 @RestController
 @RequestMapping("/api/instructors")
@@ -12,7 +13,7 @@ class InstructorController(private val instructorService: InstructorService) {
     fun getById(@PathVariable id: Long): InstructorDto? = instructorService.getById(id)?.toDto()
 
     @PostMapping
-    fun create(@RequestBody dto: InstructorDto): InstructorDto = instructorService.create(dto.toEntity()).toDto()
+    fun create(@RequestBody @Valid dto: InstructorDto): InstructorDto = instructorService.create(dto.toEntity()).toDto()
 }
 
 fun Instructor.toDto() = InstructorDto(id, name, specialization, experience, description, price, contacts)

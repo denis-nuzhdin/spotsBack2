@@ -1,3 +1,55 @@
+-- Создание таблиц для тестовой базы данных
+
+-- Создание таблицы spot_types
+CREATE TABLE IF NOT EXISTS spot_types (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description TEXT
+);
+
+-- Создание таблицы spots
+CREATE TABLE IF NOT EXISTS spots (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    city VARCHAR(100),
+    address TEXT,
+    price DECIMAL(10,2),
+    schedule VARCHAR(255),
+    latitude DECIMAL(10,8),
+    longitude DECIMAL(11,8),
+    spot_type_id BIGINT NOT NULL,
+    main_photo_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (spot_type_id) REFERENCES spot_types(id)
+);
+
+-- Создание таблицы instructors
+CREATE TABLE IF NOT EXISTS instructors (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    specialization VARCHAR(100),
+    experience INTEGER,
+    description TEXT,
+    price DECIMAL(10,2),
+    contacts VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Создание таблицы spot_photos
+CREATE TABLE IF NOT EXISTS spot_photos (
+    id BIGSERIAL PRIMARY KEY,
+    spot_id BIGINT NOT NULL,
+    photo_url TEXT NOT NULL,
+    is_main BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (spot_id) REFERENCES spots(id) ON DELETE CASCADE
+);
+
+-- Вставка тестовых данных
+
 -- Создание типов спотов
 INSERT INTO spot_types (name, description) VALUES
 ('Скейтпарк', 'Места для катания на скейтборде'),
